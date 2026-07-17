@@ -102,6 +102,6 @@
 | App 图标 | `ImageStudio/Assets.xcassets/AppIcon.appiconset`（源 `design/promo/visual/app-icon-1024.png`） | Dock / Finder |
 | 吉祥物系列（软胶 3D，珊瑚→紫 + 炭黑） | `design/promo/visual/asset-3d-{hero,waving,painting,sleeping,frame}.png` | 空状态、设置彩蛋、宣传物料 |
 | 应用内资产 | `Assets.xcassets/MascotSleeping`（空画廊）、`MascotHero`（设置底部） | 透明底 480px |
-| Promo 成品 | `design/promo/shots/`：`social-github-1280x640.png`（GitHub social preview）、`hero-readme.png`（README 头图） | 对外 |
+| Promo 成品 | `design/promo/shots/`：`social-github-1280x640.png`（GitHub social preview）、`hero-readme-{en,zh}.png`（双语 README 头图）、`demo-generate.gif`（生成流程演示） | 对外 |
 
 吉祥物使用纪律：只出现在空状态、设置彩蛋与对外物料；不进高频操作路径，不做装饰性堆叠。

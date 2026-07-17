@@ -4,7 +4,9 @@ English | [简体中文](README.zh-CN.md)
 
 Native macOS studio for AI image generation. Write a prompt, drop in reference images, generate a batch in parallel. Results land in a folder you pick, and that folder is the history.
 
-![Image Studio](design/promo/shots/hero-readme.png)
+![Image Studio](design/promo/shots/hero-readme-en.png)
+
+![Demo](design/promo/shots/demo-generate.gif)
 
 ![Platform](https://img.shields.io/badge/platform-macOS%2015%2B-blue)
 ![Swift](https://img.shields.io/badge/Swift-6-orange)
