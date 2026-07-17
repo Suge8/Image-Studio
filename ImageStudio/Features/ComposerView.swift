@@ -10,9 +10,9 @@ struct ComposerView: View {
             ProviderCapsule(store: store)
                 .padding(.top, 40) // 红绿灯区域
             promptEditor
-            referenceStrip
-            chipsRow
+            referenceZone
             Spacer(minLength: 0)
+            chipsRow
             if let reason = store.blockedReason {
                 blockedCard(reason)
             }
@@ -21,6 +21,7 @@ struct ComposerView: View {
         }
         .padding(16)
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+        .animation(.easeOut(duration: 0.18), value: store.draft.references.count)
         .onDrop(of: [.fileURL], isTargeted: nil) { handleDrop($0) }
     }
 
@@ -40,12 +41,12 @@ struct ComposerView: View {
                     .allowsHitTesting(false)
             }
         }
-        .frame(minHeight: 150, maxHeight: 280)
+        .frame(minHeight: 140, maxHeight: 220)
         .background(RoundedRectangle(cornerRadius: 12).fill(.background))
         .overlay(
             RoundedRectangle(cornerRadius: 12)
                 .strokeBorder(
-                    promptFocused ? AnyShapeStyle(Color.brand.opacity(0.55)) : AnyShapeStyle(.quaternary),
+                    promptFocused ? AnyShapeStyle(LinearGradient.brand) : AnyShapeStyle(.quaternary),
                     lineWidth: promptFocused ? 1.5 : 1
                 )
         )
@@ -59,43 +60,57 @@ struct ComposerView: View {
         .animation(.easeOut(duration: 0.15), value: promptFocused)
     }
 
-    // MARK: - 参考图
+    // MARK: - 参考图区：空态是整块可点拖放区；有图变缩略网格 + 末尾加号
 
-    private var referenceStrip: some View {
-        ScrollView(.horizontal, showsIndicators: false) {
-            HStack(spacing: 8) {
-                addReferenceButton
+    private let referenceColumns = [GridItem(.adaptive(minimum: 56, maximum: 64), spacing: 8)]
+
+    @ViewBuilder
+    private var referenceZone: some View {
+        if store.draft.references.isEmpty {
+            Button {
+                pickReferences()
+            } label: {
+                VStack(spacing: 6) {
+                    Image(systemName: "photo.badge.plus")
+                        .font(.title3)
+                    Text("Drop, paste, or click to add references")
+                        .font(.caption)
+                        .multilineTextAlignment(.center)
+                }
+                .foregroundStyle(.tertiary)
+                .frame(maxWidth: .infinity, minHeight: 88)
+                .background(
+                    RoundedRectangle(cornerRadius: 12)
+                        .strokeBorder(.quaternary, style: StrokeStyle(lineWidth: 1, dash: [5]))
+                )
+                .contentShape(RoundedRectangle(cornerRadius: 12))
+            }
+            .buttonStyle(.plain)
+            .pointerStyle(.link)
+        } else {
+            LazyVGrid(columns: referenceColumns, alignment: .leading, spacing: 8) {
                 ForEach(store.draft.references) { ref in
                     referenceCell(ref)
                 }
-            }
-            .padding(2)
-        }
-    }
-
-    private var addReferenceButton: some View {
-        Button {
-            pickReferences()
-        } label: {
-            VStack(spacing: 3) {
-                Image(systemName: "photo.badge.plus")
-                    .font(.body)
-                if store.draft.references.isEmpty {
-                    Text("Reference")
-                        .font(.caption2)
+                if store.draft.references.count < AppConstants.maxReferences {
+                    Button {
+                        pickReferences()
+                    } label: {
+                        Image(systemName: "plus")
+                            .font(.body)
+                            .foregroundStyle(.secondary)
+                            .frame(width: 56, height: 56)
+                            .background(
+                                RoundedRectangle(cornerRadius: 10)
+                                    .strokeBorder(.quaternary, style: StrokeStyle(lineWidth: 1, dash: [4]))
+                            )
+                    }
+                    .buttonStyle(.plain)
+                    .pointerStyle(.link)
+                    .help(Text("Add reference images (drag in / ⇧⌘V to paste)"))
                 }
             }
-            .foregroundStyle(.secondary)
-            .frame(width: 56, height: 56)
-            .background(
-                RoundedRectangle(cornerRadius: 10)
-                    .strokeBorder(.quaternary, style: StrokeStyle(lineWidth: 1, dash: [4]))
-            )
         }
-        .buttonStyle(.plain)
-        .pointerStyle(.link)
-        .disabled(store.draft.references.count >= AppConstants.maxReferences)
-        .help(Text("Add reference images (drag in / ⇧⌘V to paste)"))
     }
 
     private func referenceCell(_ ref: ReferenceImage) -> some View {
@@ -157,7 +172,8 @@ struct ComposerView: View {
         var parts: [String] = []
         if quality != .auto { parts.append(quality.label) }
         if background != .auto { parts.append(background.label) }
-        return parts.joined(separator: " · ").ifEmpty(String(localized: "quality auto"))
+        // chips 宽度有限：默认只显 "auto"，icon 已区分语义
+        return parts.joined(separator: " · ").ifEmpty("auto")
     }
 
     private var countPopover: some View {
@@ -242,45 +258,63 @@ struct ComposerView: View {
         .background(RoundedRectangle(cornerRadius: 10).fill(.orange.opacity(0.08)))
     }
 
-    @ViewBuilder
+    /// 生成区：居中胶囊主按钮（进行中仍可提新批次）+ icon-only 停止；状态行居中。
     private var generateArea: some View {
-        if store.run.isBusy {
+        VStack(spacing: 8) {
             HStack(spacing: 10) {
-                ProgressView()
-                    .controlSize(.small)
-                if case .running(let inFlight, let total) = store.run {
-                    Text("Done \(max(0, total - inFlight))/\(total)")
-                        .foregroundStyle(.secondary)
-                        .font(.callout)
-                        .monospacedDigit()
-                        .contentTransition(.numericText())
-                }
-                Spacer()
-                Button("Stop") { store.cancel() }
-                    .keyboardShortcut(.cancelAction)
-            }
-            .padding(.vertical, 6)
-            .transition(.opacity)
-        } else {
-            VStack(spacing: 4) {
                 Button(action: store.submit) {
-                    Label("Generate", systemImage: "sparkles")
-                        .frame(maxWidth: .infinity)
-                        .padding(.vertical, 2)
+                    HStack(spacing: 6) {
+                        Image(systemName: "arrow.up")
+                            .font(.callout.weight(.bold))
+                        Text("Generate")
+                    }
                 }
-                .buttonStyle(.borderedProminent)
-                .controlSize(.large)
+                .buttonStyle(BrandProminentButtonStyle())
                 .keyboardShortcut(.return, modifiers: .command)
                 .disabled(!canSubmit)
                 .pointerStyle(.link)
-                if let cost = store.estimatedCost {
-                    Text(cost)
-                        .font(.caption2)
-                        .foregroundStyle(.tertiary)
+
+                if store.run.isBusy {
+                    Button {
+                        store.cancel()
+                    } label: {
+                        Image(systemName: "stop.fill")
+                            .font(.callout)
+                            .foregroundStyle(.secondary)
+                            .frame(width: 34, height: 34)
+                            .background(Circle().fill(.quaternary.opacity(0.5)))
+                    }
+                    .buttonStyle(.plain)
+                    .pointerStyle(.link)
+                    .keyboardShortcut(.cancelAction)
+                    .help(Text("Stop"))
+                    .transition(.scale(scale: 0.6).combined(with: .opacity))
                 }
             }
-            .transition(.opacity)
+            .frame(maxWidth: .infinity)
+
+            if store.run.isBusy {
+                HStack(spacing: 6) {
+                    ProgressView()
+                        .controlSize(.mini)
+                    if case .running(let inFlight, let total) = store.run {
+                        Text("Done \(max(0, total - inFlight))/\(total)")
+                            .foregroundStyle(.secondary)
+                            .font(.caption)
+                            .monospacedDigit()
+                            .contentTransition(.numericText())
+                    }
+                }
+                .frame(maxWidth: .infinity)
+                .transition(.opacity)
+            } else if let cost = store.estimatedCost {
+                Text(cost)
+                    .font(.caption2)
+                    .foregroundStyle(.tertiary)
+                    .frame(maxWidth: .infinity)
+            }
         }
+        .animation(.spring(duration: 0.25), value: store.run.isBusy)
     }
 
     private var bottomBar: some View {
@@ -355,7 +389,7 @@ struct ProviderCapsule: View {
             HStack(spacing: 6) {
                 Image(systemName: store.draft.provider == .codex ? "terminal" : "cloud")
                     .font(.caption)
-                    .foregroundStyle(Color.brand)
+                    .foregroundStyle(.secondary)
                 Text(store.providerLabel)
                     .font(.callout)
                     .lineLimit(1)
@@ -428,18 +462,15 @@ private struct FavoritesChip: View {
         Button {
             showPopover.toggle()
         } label: {
-            HStack(spacing: 5) {
-                Image(systemName: "star")
-                    .font(.caption)
-                Text("Favorites")
-                    .font(.callout)
-            }
-            .padding(.horizontal, 10)
-            .padding(.vertical, 5)
-            .background(Capsule().fill(.quaternary.opacity(0.45)))
+            Image(systemName: "star")
+                .font(.callout)
+                .foregroundStyle(.secondary)
+                .padding(.horizontal, 9)
+                .padding(.vertical, 6)
+                .background(Capsule().fill(.quaternary.opacity(0.45)))
         }
         .buttonStyle(.plain)
-        .hoverHighlight(cornerRadius: 12)
+        .hoverHighlight(cornerRadius: 14)
         .help(Text("Favorite prompts"))
         .popover(isPresented: $showPopover, arrowEdge: .bottom) {
             VStack(alignment: .leading, spacing: 0) {

@@ -4,6 +4,8 @@
 
 macOS 原生 AI 图片工作台。写 prompt、丢参考图、一次并行出一批；结果落盘到自选目录，目录即历史。
 
+![Image Studio](design/promo/shots/hero-readme.png)
+
 ![Platform](https://img.shields.io/badge/platform-macOS%2015%2B-blue)
 ![Swift](https://img.shields.io/badge/Swift-6-orange)
 ![License](https://img.shields.io/badge/license-Apache--2.0-green)

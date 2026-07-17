@@ -13,12 +13,12 @@
 
 | Token | 值 | 用途 |
 |---|---|---|
-| `Color.brand` | 暗房琥珀：dark `#EDA852`（0.93/0.66/0.32）· light `#AD6B1F`（0.68/0.42/0.12） | 主按钮、选中框、focus ring、pin 标记 |
-| `Color.canvas` | `NSColor.underPageBackgroundColor` | 画廊底（比窗口底深一档，衬图片） |
-| 窗口底 | 系统 `.background` | Composer 侧栏 |
+| `Color.brand` | 珊瑚：dark `#F5856B` · light `#D9614D` | 单色场合：图标 tint、pin、选中框 |
+| `LinearGradient.brand` | 柔和多彩：珊瑚→玫瑰→紫罗兰→天青（中饱和，Apple Intelligence 风） | 主 CTA（生成按钮）、focus ring；小元素禁用渐变防花 |
+| 窗口底 | 系统 `.background` | 全窗统一底色（分区靠间距与留白，不用色差不用分割线） |
 | 控件底 | `.quaternary.opacity(0.45)` | chips、胶囊、缩略图占位 |
 
-规则：**分区靠背景色差，不用分割线**；跟随系统明暗，不自造主题开关。
+规则：**无分割线、无色块分区**；跟随系统明暗，不自造主题开关。
 
 ## 3. 排版
 
@@ -54,12 +54,12 @@
 
 | 组件 | 形态 | 出现位置 |
 |---|---|---|
-| Chip | 胶囊 icon+label，点击弹 popover | 张数 / 尺寸 / 画质 / 收藏 |
+| Chip | 胶囊 icon+label（或 icon-only），点击弹 popover | 参考图 / 张数 / 尺寸 / 画质 / 收藏 |
 | 通道胶囊 | 圆角矩形，brand 图标 + 通道·模型 + chevron | Composer 顶部 |
 | Popover | 系统 popover，内容 padding 14 | 一切参数调整、历史、收藏 |
 | Toast | 顶部胶囊材质浮层，3s 自动消失，点击关闭 | 瞬态反馈 |
 | Blocked card | 橙色 8% 底 + 图标 + 一句话 + 行动按钮 | 未登录 / 未配 key |
-| 骨架 | shimmer 微光 + 已耗时计时 | 生成中槽位 |
+| 骨架 | GenerativeShimmer：品牌渐变呼吸 + 流光扫过 + 已耗时计时 | 生成中槽位 |
 | 空状态 | 图标 + 引导句 + 可点样例 prompt | 空画廊 |
 
 ## 6. 动效（150–250ms，指数缓出，只表达状态）
@@ -67,7 +67,7 @@
 | 场景 | 规格 |
 |---|---|
 | 图片完成弹入 | opacity 0→1 + scale 0.96→1，200ms ease-out |
-| 骨架等待 | shimmer 1.4s 循环（唯一循环动画，等待即语义） |
+| 骨架等待 | 品牌渐变呼吸 2.2s + 流光 1.8s 循环（唯一循环动画，等待即语义） |
 | 网格重排 | spring 300ms（value: items.map(\.id)） |
 | hover | 背景 `.primary.opacity(0.08)` / 卡片 scale 1.02 + 阴影，120–150ms |
 | toast | 顶部滑入+淡入，spring 300ms |
@@ -87,3 +87,21 @@
 
 - String Catalog（`ImageStudio/Localizable.xcstrings`）：源语言 en，zh-Hans 全量翻译；新 UI 字符串必须同步补双语
 - 错误文案说人话并给出路（"上游服务过载，请稍后重试"），原始错误进日志不进 UI
+
+## 9. 按钮语言
+
+- 主 CTA：胶囊渐变按钮（`BrandProminentButtonStyle`），`arrow.up` 图标，自适应宽度水平居中
+- 次级操作一律 **icon-only + `.help` tooltip**（设置、日志、停止、参考图入口、收藏）
+- 停止：icon-only 圆钮（`stop.fill`），仅生成中出现在主按钮右侧，spring 弹入
+
+## 10. 品牌资产
+
+| 资产 | 位置 | 用途 |
+|---|---|---|
+| Logo 定稿（层叠画布，扁平） | `design/promo/visual/logo-final-flat.png` | 品牌标志源文件 |
+| App 图标 | `ImageStudio/Assets.xcassets/AppIcon.appiconset`（源 `design/promo/visual/app-icon-1024.png`） | Dock / Finder |
+| 吉祥物系列（软胶 3D，珊瑚→紫 + 炭黑） | `design/promo/visual/asset-3d-{hero,waving,painting,sleeping,frame}.png` | 空状态、设置彩蛋、宣传物料 |
+| 应用内资产 | `Assets.xcassets/MascotSleeping`（空画廊）、`MascotHero`（设置底部） | 透明底 480px |
+| Promo 成品 | `design/promo/shots/`：`social-github-1280x640.png`（GitHub social preview）、`hero-readme.png`（README 头图） | 对外 |
+
+吉祥物使用纪律：只出现在空状态、设置彩蛋与对外物料；不进高频操作路径，不做装饰性堆叠。

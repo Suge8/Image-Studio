@@ -26,21 +26,27 @@ enum GenerationEvent: Sendable {
 
 actor GenerationEngine {
     private let authClient = AuthClient()
-    private var currentTask: Task<Void, Never>?
+    /// 多批次并发：每个 run 独立 Task，新提交不影响进行中的批次。
+    private var tasks: [UUID: Task<Void, Never>] = [:]
 
     func generate(_ request: GenerationRequest) -> AsyncStream<GenerationEvent> {
-        currentTask?.cancel()
         let (stream, continuation) = AsyncStream.makeStream(of: GenerationEvent.self)
         let authClient = authClient
-        currentTask = Task {
+        let runId = request.runId
+        tasks[runId] = Task {
             await Self.run(request: request, authClient: authClient, continuation: continuation)
+            await self.removeTask(runId)
         }
         return stream
     }
 
     func cancel() {
-        currentTask?.cancel()
-        currentTask = nil
+        for task in tasks.values { task.cancel() }
+        tasks.removeAll()
+    }
+
+    private func removeTask(_ runId: UUID) {
+        tasks[runId] = nil
     }
 
     private static func run(

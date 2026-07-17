@@ -52,9 +52,11 @@ struct GalleryView: View {
 
     private var emptyState: some View {
         VStack(spacing: 16) {
-            Image(systemName: "photo.on.rectangle.angled")
-                .font(.system(size: 40))
-                .foregroundStyle(.tertiary)
+            Image("MascotSleeping")
+                .resizable()
+                .scaledToFit()
+                .frame(width: 150, height: 150)
+                .accessibilityHidden(true)
             Text("Write a prompt, then ⌘↩ to generate")
                 .font(.title3.weight(.medium))
             Text("Results and existing images in the output folder show up here")
@@ -157,19 +159,13 @@ private struct GalleryCell: View {
         switch item.state {
         case .queued, .inFlight:
             ZStack {
-                if reduceMotion {
-                    RoundedRectangle(cornerRadius: 12).fill(.quaternary.opacity(0.4))
+                GenerativeShimmer()
+                if item.state == .inFlight {
+                    ElapsedLabel(since: item.createdAt)
                 } else {
-                    Shimmer()
-                }
-                VStack(spacing: 6) {
-                    if item.state == .inFlight {
-                        ElapsedLabel(since: item.createdAt)
-                    } else {
-                        Text("Queued")
-                            .font(.caption)
-                            .foregroundStyle(.secondary)
-                    }
+                    Text("Queued")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
                 }
             }
         case .succeeded(let url):
@@ -274,25 +270,3 @@ private struct ElapsedLabel: View {
     }
 }
 
-/// 骨架微光（等待即语义，唯一循环动画）。
-private struct Shimmer: View {
-    @State private var phase: CGFloat = -1.5
-
-    var body: some View {
-        GeometryReader { geo in
-            LinearGradient(
-                colors: [.clear, .white.opacity(0.12), .clear],
-                startPoint: .leading,
-                endPoint: .trailing
-            )
-            .frame(width: geo.size.width * 1.5)
-            .offset(x: phase * geo.size.width)
-        }
-        .background(.quaternary.opacity(0.4))
-        .onAppear {
-            withAnimation(.linear(duration: 1.4).repeatForever(autoreverses: false)) {
-                phase = 1.5
-            }
-        }
-    }
-}

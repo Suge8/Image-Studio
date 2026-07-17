@@ -321,6 +321,16 @@
         }
       }
     },
+    "Drop, paste, or click to add references": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "拖入、粘贴或点击添加参考图"
+          }
+        }
+      }
+    },
     "Failed": {
       "localizations": {
         "zh-Hans": {
@@ -1061,16 +1071,6 @@
         }
       }
     },
-    "Wait for the current batch to finish": {
-      "localizations": {
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "等待当前批次完成后再重试"
-          }
-        }
-      }
-    },
     "Write a prompt or add a reference image": {
       "localizations": {
         "zh-Hans": {
@@ -1087,16 +1087,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "写一句描述，⌘↩ 生成"
-          }
-        }
-      }
-    },
-    "quality auto": {
-      "localizations": {
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "画质 auto"
           }
         }
       }

@@ -36,9 +36,9 @@ final class StudioStore {
     private let thumbnails = ThumbnailCache()
 
     private var libraryTask: Task<Void, Never>?
-    private var runTask: Task<Void, Never>?
+    /// 多批次并发：每个进行中批次一个消费 Task。
+    private var runTasks: [UUID: Task<Void, Never>] = [:]
     private var toastTask: Task<Void, Never>?
-    private var currentRunId: UUID?
     /// 会话期内每个批次的请求快照，供失败槽位单格重试。
     private var runRequests: [UUID: GenerationRequest] = [:]
 
@@ -220,7 +220,6 @@ final class StudioStore {
             showToast(reason)
             return
         }
-        guard !run.isBusy else { return }
 
         ensureOutputDirectory()
         savePreferences()
@@ -262,13 +261,9 @@ final class StudioStore {
         start(request)
     }
 
-    /// 单格重试：沿用该批次锚定的参数，只重跑一张；任何不可重试情况都给反馈，不静默。
+    /// 单格重试：沿用该批次锚定的参数，只重跑一张；不可重试时给反馈，不静默。
     func retrySlot(_ item: GalleryItem) {
         guard case .failed = item.state, case .session(let runId) = item.source else { return }
-        guard !run.isBusy else {
-            showToast(String(localized: "Wait for the current batch to finish"))
-            return
-        }
         guard let origin = runRequests[runId] else {
             showToast(String(localized: "This batch is no longer retryable"))
             return
@@ -279,7 +274,7 @@ final class StudioStore {
             count: 1,
             provider: origin.provider,
             outputDirectory: origin.outputDirectory,
-            runId: origin.runId,
+            runId: UUID(),
             itemIDs: [UUID()]
         )
         items.removeAll { $0.id == item.id }
@@ -287,7 +282,6 @@ final class StudioStore {
     }
 
     private func start(_ request: GenerationRequest) {
-        currentRunId = request.runId
         runRequests[request.runId] = request
         let sessionItems = request.itemIDs.enumerated().map { idx, id in
             GalleryItem(
@@ -298,37 +292,31 @@ final class StudioStore {
                 slotIndex: idx + 1
             )
         }
-        // 丢弃上一批未完成槽位；成功/失败保留到下次目录合并
-        let kept = items.filter {
-            switch $0.state {
-            case .succeeded, .failed: true
-            case .queued, .inFlight: false
-            }
-        }
-        items = sessionItems + kept
-        run = .running(inFlight: request.count, total: request.count)
-
-        runTask?.cancel()
-        runTask = Task { [weak self] in
+        // 新批次插到最前；其他批次（含进行中）全部保留
+        items = sessionItems + items
+        let runId = request.runId
+        runTasks[runId] = Task { [weak self] in
             guard let self else { return }
             let stream = await engine.generate(request)
             for await event in stream {
                 if Task.isCancelled { break }
                 self.apply(event)
             }
-            if !Task.isCancelled {
-                self.run = .idle
+            self.runTasks[runId] = nil
+            self.recountRun()
+            if !Task.isCancelled, self.runTasks.isEmpty {
                 self.reloadLibraryKeepingActive()
             }
         }
+        recountRun()
     }
 
     func cancel() {
         guard run.isBusy else { return }
         run = .cancelling
         Task { await engine.cancel() }
-        runTask?.cancel()
-        runTask = nil
+        for task in runTasks.values { task.cancel() }
+        runTasks.removeAll()
         for index in items.indices {
             switch items[index].state {
             case .queued, .inFlight:
@@ -435,7 +423,7 @@ final class StudioStore {
             AppLog.error("slot #\(index) failed: \(message)")
             recountRun()
         case .finished:
-            run = .idle
+            recountRun()
         }
     }
 
@@ -444,11 +432,12 @@ final class StudioStore {
         mutate(&items[idx])
     }
 
+    /// 跨批次统计：total = 所有进行中批次的槽位数，inFlight = 其中未完成数。
     private func recountRun() {
-        let runId = currentRunId
+        let activeRuns = Set(runTasks.keys)
         let activeBatch = items.filter { item in
             guard case .session(let id) = item.source else { return false }
-            return runId == nil || id == runId
+            return activeRuns.contains(id)
         }
         let inFlight = activeBatch.filter {
             switch $0.state {

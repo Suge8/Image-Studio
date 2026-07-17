@@ -2,6 +2,18 @@
 
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); versions follow [SemVer](https://semver.org/).
 
+## [Unreleased]
+
+### Added
+
+- Concurrent batches: keep submitting new prompts while earlier batches are still generating; per-batch stop semantics
+- Prompt favorites with pin/delete and built-in logo-board template; ⌘V pastes clipboard images straight into references
+- Brand identity: layered-canvas logo, macOS app icon, clay mascot set (empty state, settings, promo art)
+
+### Changed
+
+- Full visual polish: multicolor brand gradient (CTA, focus ring, generating shimmer), hidden title bar, divider-free layout, icon-only secondary actions, redesigned settings and composer
+
 ## [0.2.0] - 2026-07-17
 
 ### Added
