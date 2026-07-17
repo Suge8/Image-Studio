@@ -246,5 +246,5 @@ enum AppConstants {
     static let relayPollInterval: TimeInterval = 3
     static let relayPollMaxErrors = 5
     static let relayDownloadRetries = 2
-    static let appVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "0.1.0"
+    static let appVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "?"
 }

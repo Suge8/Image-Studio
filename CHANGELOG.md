@@ -4,15 +4,21 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); version
 
 ## [Unreleased]
 
+## [0.3.0] - 2026-07-18
+
 ### Added
 
 - Concurrent batches: keep submitting new prompts while earlier batches are still generating; per-batch stop semantics
-- Prompt favorites with pin/delete and built-in logo-board template; ⌘V pastes clipboard images straight into references
-- Brand identity: layered-canvas logo, macOS app icon, clay mascot set (empty state, settings, promo art)
+- ⌘V pastes clipboard images straight into references
+- Brand identity: layered-canvas logo, macOS app icon, clay mascot set (empty state, settings shelf, promo art)
+- Author credit and GitHub link in Settings
+- CI on GitHub Actions (build + unit tests on macos-26)
 
 ### Changed
 
 - Full visual polish: multicolor brand gradient (CTA, focus ring, generating shimmer), hidden title bar, divider-free layout, icon-only secondary actions, redesigned settings and composer
+- Relay base URL no longer pre-fills any vendor; empty until configured
+- App marketing version aligned with release tags (0.3.0)
 
 ## [0.2.0] - 2026-07-17
 

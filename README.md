@@ -1,76 +1,68 @@
+<div align="center">
+
+<img src="design/promo/shots/logo-256.png" width="120" alt="Image Studio icon">
+
 # Image Studio
 
-English | [简体中文](README.zh-CN.md)
+**Prompt in, pictures out — a tiny native AI image studio for your Mac.**
 
-Native macOS studio for AI image generation. Write a prompt, drop in reference images, generate a batch in parallel. Results land in a folder you pick, and that folder is the history.
-
-![Image Studio](design/promo/shots/hero-readme-en.png)
-
-![Demo](design/promo/shots/demo-generate.gif)
-
-![Platform](https://img.shields.io/badge/platform-macOS%2015%2B-blue)
+[![CI](https://github.com/Suge8/Image-Studio/actions/workflows/ci.yml/badge.svg)](https://github.com/Suge8/Image-Studio/actions/workflows/ci.yml)
+![Platform](https://img.shields.io/badge/macOS-15%2B-blue)
 ![Swift](https://img.shields.io/badge/Swift-6-orange)
 ![License](https://img.shields.io/badge/license-Apache--2.0-green)
 
-## Why
+English | [简体中文](README.zh-CN.md)
 
-Most image tools make you choose between a browser tab and a subscription app. Image Studio is a 2.4 MB native app with zero third-party dependencies that talks to backends you already have:
+<img src="design/promo/shots/hero-readme-en.png" alt="Image Studio screenshot">
 
-- **Codex channel**: reuses your local `codex login` session (ChatGPT subscription). No extra key, no extra cost.
-- **Relay channel**: bring an API key for any OpenAI-Images-compatible relay. Tested against [right.codes](https://www.right.codes) with `gpt-image-2` and the `nano-banana` family; sync and async (task-polling) relays both work.
+</div>
 
-## Features
+## ✨ Why you'll like it
 
-- Unlimited parallel generation: one request per image, each slot retries independently
-- Folder-as-history gallery: Quick Look with Space, drag out to Finder, right-click "Use as Reference" to iterate
-- Prompt favorites with a built-in logo-board template, plus automatic prompt history
-- Reference images (up to 16) via drag, paste (⇧⌘V), or file picker
-- Per-channel size options that match what each backend honors (verified against live endpoints, no fake choices)
-- Relay model list with per-image pricing and cost estimate before you generate
-- English and Simplified Chinese UI
+- **Free with what you have** — reuses your local `codex login` (ChatGPT subscription). No extra key, no extra cost.
+- **Or bring a key** — any OpenAI-Images-compatible relay works: `gpt-image`, `nano-banana` family, with per-image prices shown before you spend.
+- **Truly native** — a 2.4 MB SwiftUI app, zero third-party dependencies, no Electron, no browser tab.
+- **Batch by default** — every image is its own parallel request; keep submitting while earlier batches still cook.
+- **Your folder is the history** — results land in a folder you pick. Quick Look, drag to Finder, no database, no lock-in.
+- **Honest controls** — only sizes each backend actually honors (verified live). No placebo dropdowns.
 
-## Install
+## 🚀 Get started
 
-Build from source (requires macOS 15+ and Xcode 16+):
+**1 · Install** (macOS 15+, Xcode 16+)
 
 ```bash
-git clone git@github.com:Suge8/Image-Studio.git
-cd Image-Studio
-make install    # builds Release and installs to ~/Applications
-make run
+git clone https://github.com/Suge8/Image-Studio.git && cd Image-Studio
+make install && make run
 ```
 
-## Setup
+**2 · Connect a channel** — either one works, switch anytime from the capsule at the top left:
 
-Pick one channel, or configure both and switch from the capsule at the top left:
+| Channel | Setup |
+|---|---|
+| **Codex** | Run `codex login` once in Terminal (choose ChatGPT). Done. |
+| **Relay** | Settings → Third-party Relay → base URL + API key → *Save & Verify*. Keys live in the macOS Keychain. |
 
-**Codex**: run `codex login` in Terminal once (choose ChatGPT). The app reads `~/.codex/auth.json` and never writes your credentials anywhere else.
+**3 · Generate**
 
-**Relay**: open Settings → Third-party Relay, fill in the base URL and API key, then click "Save & Verify". The model list and prices load from the relay. Keys are stored in the macOS Keychain.
+<div align="center"><img src="design/promo/shots/demo-generate.gif" alt="Generation demo"></div>
 
-## Usage
+Type a prompt, press **⌘↩**. Slots stream into the gallery as they finish.
 
-1. Write a prompt or pick a favorite (star chip)
-2. Adjust count / size / quality from the parameter chips
-3. Press ⌘↩. Slots stream into the gallery as they finish
-4. Iterate: right-click any result → "Use as Reference"
+## 🎛️ Good to know
 
-Size semantics differ by backend. The Codex endpoint honors four values only (auto, 1:1, 3:2, 2:3); the relay accepts aspect ratios (exact) with a 1K/2K/4K tier (approximate, model-dependent). The UI shows only what each backend accepts.
+| | |
+|---|---|
+| Iterate on a result | Right-click → **Use as Reference** |
+| Reference images | Drag, paste (**⌘V**), or click the dropzone — up to 16 |
+| Reuse prompts | ★ chip for favorites (logo-board template built in), clock icon for history |
+| Preview | Select a result, press **Space** for Quick Look |
+| Failed slot | Hover → retry just that one |
 
-## Development
+## 🛠️ Development
 
 ```bash
 make test       # unit tests
-make build      # Release build → build/
-make package    # zip → dist/
+make package    # Release zip → dist/
 ```
 
-Docs live in [`docs/`](docs/): product scope, architecture, and the design system. Start with [`AGENTS.md`](AGENTS.md) for a map.
-
-## Contributing
-
-See [CONTRIBUTING.md](.github/CONTRIBUTING.md). Security reports: [SECURITY.md](.github/SECURITY.md).
-
-## License
-
-[Apache-2.0](LICENSE)
+Architecture and design docs live in [`docs/`](docs/); start at [`AGENTS.md`](AGENTS.md). Contributions welcome — see [CONTRIBUTING.md](.github/CONTRIBUTING.md) · [SECURITY.md](.github/SECURITY.md) · [Apache-2.0](LICENSE)
