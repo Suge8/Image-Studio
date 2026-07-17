@@ -11,7 +11,7 @@ A small native Mac app that turns a prompt into a batch of images.
 ![Swift](https://img.shields.io/badge/Swift-6-orange)
 ![License](https://img.shields.io/badge/license-Apache--2.0-green)
 
-English | [简体中文](README.zh-CN.md)
+English | [简体中文](README.zh-CN.md) | [Website](https://suge8.github.io/Image-Studio/)
 
 <img src="design/promo/shots/hero-readme-en.png" alt="Image Studio screenshot">
 

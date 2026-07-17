@@ -11,7 +11,7 @@ macOS 原生小应用，输入一句提示词，批量出图。
 ![Swift](https://img.shields.io/badge/Swift-6-orange)
 ![License](https://img.shields.io/badge/license-Apache--2.0-green)
 
-[English](README.md) | 简体中文
+[English](README.md) | 简体中文 | [官网](https://suge8.github.io/Image-Studio/)
 
 <img src="design/promo/shots/hero-readme-zh.png" alt="Image Studio 截图">
 
