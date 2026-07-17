@@ -136,7 +136,7 @@ struct SettingsView: View {
             }
 
             section("cloud", "Third-party Relay") {
-                TextField("Base URL", text: $baseURLText, prompt: Text(AppConstants.relayDefaultBaseURL.absoluteString))
+                TextField("Base URL", text: $baseURLText, prompt: Text(verbatim: "https://…"))
                     .textFieldStyle(.roundedBorder)
                 SecureField("API Key", text: $keyText, prompt: Text("sk-…"))
                     .textFieldStyle(.roundedBorder)
@@ -198,21 +198,29 @@ struct SettingsView: View {
 
             Spacer(minLength: 0)
 
-            HStack {
-                Spacer()
+            HStack(spacing: 10) {
                 Image("MascotHero")
                     .resizable()
                     .scaledToFit()
-                    .frame(width: 56, height: 56)
+                    .frame(width: 44, height: 44)
                     .accessibilityHidden(true)
-                    .opacity(0.9)
+                VStack(alignment: .leading, spacing: 1) {
+                    Text("Image Studio \(AppConstants.appVersion)")
+                        .font(.caption.weight(.medium))
+                    Text("by Suge8")
+                        .font(.caption2)
+                        .foregroundStyle(.secondary)
+                }
                 Spacer()
+                iconButton("link", help: Text("View on GitHub")) {
+                    NSWorkspace.shared.open(URL(string: "https://github.com/Suge8/Image-Studio")!)
+                }
             }
         }
         .padding(20)
         .frame(width: 440, height: 600)
         .onAppear {
-            baseURLText = store.relayBaseURL.absoluteString
+            baseURLText = store.relayBaseURL?.absoluteString ?? ""
             keyText = store.relayKey
         }
     }
@@ -265,7 +273,10 @@ struct SettingsView: View {
     }
 
     private func applyRelayConfig() {
-        if let url = URL(string: baseURLText.trimmingCharacters(in: .whitespaces)), url.scheme != nil {
+        let trimmed = baseURLText.trimmingCharacters(in: .whitespaces)
+        if trimmed.isEmpty {
+            store.relayBaseURL = nil
+        } else if let url = URL(string: trimmed), url.scheme != nil {
             store.relayBaseURL = url
         }
         store.relayKey = keyText.trimmingCharacters(in: .whitespaces)

@@ -19,7 +19,8 @@ final class StudioStore {
         didSet { KeychainStore.saveRelayKey(relayKey) }
     }
 
-    var relayBaseURL: URL {
+    /// nil = 未配置 Base URL。
+    var relayBaseURL: URL? {
         didSet { Preferences.relayBaseURL = relayBaseURL }
     }
 
@@ -66,7 +67,7 @@ final class StudioStore {
     // MARK: - 派生状态
 
     var relayConfigured: Bool {
-        !relayKey.trimmingCharacters(in: .whitespaces).isEmpty
+        !relayKey.trimmingCharacters(in: .whitespaces).isEmpty && relayBaseURL != nil
     }
 
     var providerLabel: String {
@@ -84,7 +85,7 @@ final class StudioStore {
             if case .failed(let message) = auth { return message }
             return nil
         case .relay:
-            return relayConfigured ? nil : String(localized: "Relay API key not configured")
+            return relayConfigured ? nil : String(localized: "Relay not configured")
         }
     }
 
@@ -130,7 +131,10 @@ final class StudioStore {
 
     /// 拉取中转模型列表（顺带验证 key）；返回错误文案，nil = 成功。
     func refreshRelayModels() async -> String? {
-        let config = RelayConfig(baseURL: relayBaseURL, apiKey: relayKey)
+        guard let baseURL = relayBaseURL else {
+            return String(localized: "Relay not configured")
+        }
+        let config = RelayConfig(baseURL: baseURL, apiKey: relayKey)
         do {
             let models = try await RelayImageClient.fetchModels(config: config)
             if !models.isEmpty { relayModels = models }
@@ -231,15 +235,18 @@ final class StudioStore {
             ? "Edit the provided reference image(s)."
             : prompt
 
-        let provider: ProviderSelection = switch draft.provider {
+        let provider: ProviderSelection
+        switch draft.provider {
         case .codex:
-            .codex(
+            provider = .codex(
                 modelOverride: draft.model.isEmpty ? nil : draft.model,
                 options: draft.options
             )
         case .relay:
-            .relay(
-                config: RelayConfig(baseURL: relayBaseURL, apiKey: relayKey),
+            // blockedReason 已拦截未配置；此处仅防并发改动
+            guard let baseURL = relayBaseURL else { return }
+            provider = .relay(
+                config: RelayConfig(baseURL: baseURL, apiKey: relayKey),
                 draft: draft.relay
             )
         }

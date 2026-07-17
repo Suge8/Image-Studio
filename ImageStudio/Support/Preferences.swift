@@ -57,14 +57,13 @@ enum Preferences {
         defaults.set(draft.relay.imageSize.rawValue, forKey: Key.relayImageSize)
     }
 
-    static var relayBaseURL: URL {
+    /// nil = 未配置（不预填任何商家）。
+    static var relayBaseURL: URL? {
         get {
-            guard let raw = defaults.string(forKey: Key.relayBaseURL), let url = URL(string: raw) else {
-                return AppConstants.relayDefaultBaseURL
-            }
-            return url
+            guard let raw = defaults.string(forKey: Key.relayBaseURL), !raw.isEmpty else { return nil }
+            return URL(string: raw)
         }
-        set { defaults.set(newValue.absoluteString, forKey: Key.relayBaseURL) }
+        set { defaults.set(newValue?.absoluteString ?? "", forKey: Key.relayBaseURL) }
     }
 
     static var relayModels: [RelayModel] {

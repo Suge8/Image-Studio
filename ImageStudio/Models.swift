@@ -241,7 +241,6 @@ enum AppConstants {
     static let inputImageRateLimitDelays: [TimeInterval] = [65, 130, 260, 300]
     static let requestTimeout: TimeInterval = 300
     // Relay（实测：最快 35s、最慢 69s 完成；轮询是纪律显式例外——对方无事件接口）
-    static let relayDefaultBaseURL = URL(string: "https://www.right.codes/draw")!
     static let relayPresetModels = ["gpt-image-2", "nano-banana-2", "nano-banana-pro"]
     static let relayPollFirstDelay: TimeInterval = 5
     static let relayPollInterval: TimeInterval = 3

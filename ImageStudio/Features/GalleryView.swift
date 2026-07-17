@@ -55,7 +55,7 @@ struct GalleryView: View {
             Image("MascotSleeping")
                 .resizable()
                 .scaledToFit()
-                .frame(width: 150, height: 150)
+                .frame(width: 220, height: 220)
                 .accessibilityHidden(true)
             Text("Write a prompt, then ⌘↩ to generate")
                 .font(.title3.weight(.medium))

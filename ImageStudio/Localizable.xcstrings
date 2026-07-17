@@ -761,12 +761,12 @@
         }
       }
     },
-    "Relay API key not configured": {
+    "Relay not configured": {
       "localizations": {
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "中转尚未配置 API Key"
+            "value": "中转尚未配置（Base URL 与 API Key）"
           }
         }
       }
@@ -1067,6 +1067,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "查看日志"
+          }
+        }
+      }
+    },
+    "View on GitHub": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "在 GitHub 查看"
           }
         }
       }

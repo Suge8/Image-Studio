@@ -17,6 +17,15 @@ struct ComposerView: View {
                 blockedCard(reason)
             }
             generateArea
+            HStack {
+                Spacer()
+                Image("MascotStudio")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(maxWidth: 190, maxHeight: 190)
+                    .accessibilityHidden(true)
+                Spacer()
+            }
             bottomBar
         }
         .padding(16)
