@@ -25,13 +25,14 @@
   --ink: oklch(0.28 0.012 290);
   --muted: oklch(0.48 0.015 290);
   --paper: oklch(0.995 0.002 290);
-  --tint: oklch(0.972 0.008 300);
   --line: oklch(0.92 0.006 290);
   --grad: linear-gradient(120deg, var(--coral), var(--rose) 38%, var(--violet) 68%, var(--sky));
   --font-display: "Fredoka", "PingFang SC", "Hiragino Sans GB", sans-serif;
   --font-body: -apple-system, BlinkMacSystemFont, "SF Pro Text", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
-  --r-lg: 28px;
-  --z-sticky: 10;
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --z-nav: 10;
+  --z-progress: 20;
+  --z-noise: 30;
 }
 * { margin: 0; padding: 0; box-sizing: border-box; }
 html { scroll-behavior: smooth; }
@@ -47,13 +48,37 @@ img, video { display: block; max-width: 100%; height: auto; }
 a { color: inherit; text-decoration: none; }
 .wrap { width: min(1120px, 100% - 48px); margin-inline: auto; }
 h1, h2, h3 { font-family: var(--font-display); font-weight: 600; line-height: 1.12; letter-spacing: -0.015em; text-wrap: balance; }
-section { padding-block: clamp(72px, 11vw, 132px); }
+section { padding-block: clamp(72px, 11vw, 132px); position: relative; }
+
+/* ── atmosphere ──────────────────── */
+.aurora-global { position: fixed; inset: 0; z-index: -1; overflow: hidden; pointer-events: none; }
+.aurora-global span {
+  position: absolute; border-radius: 50%; filter: blur(100px); opacity: 0.42;
+  animation: drift 30s ease-in-out infinite alternate;
+}
+.aurora-global .b1 { width: 46vw; height: 46vw; left: -14vw; top: -12vw; background: radial-gradient(circle, var(--coral), transparent 68%); }
+.aurora-global .b2 { width: 42vw; height: 42vw; right: -12vw; top: -8vw; background: radial-gradient(circle, var(--sky), transparent 68%); animation-delay: -10s; }
+.aurora-global .b3 { width: 36vw; height: 36vw; left: 30vw; top: 46vh; background: radial-gradient(circle, var(--violet), transparent 68%); opacity: 0.26; animation-delay: -20s; }
+@keyframes drift {
+  from { transform: translate3d(0, 0, 0) scale(1); }
+  to { transform: translate3d(7vw, 5vh, 0) scale(1.14); }
+}
+.noise {
+  position: fixed; inset: -50%; z-index: var(--z-noise); pointer-events: none; opacity: 0.028;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='240' height='240' filter='url(%23n)'/%3E%3C/svg%3E");
+  animation: grain 1.1s steps(4) infinite;
+}
+@keyframes grain {
+  0% { transform: translate(0, 0); } 25% { transform: translate(-2%, 1.4%); }
+  50% { transform: translate(1.6%, -1%); } 75% { transform: translate(-1%, -1.8%); } 100% { transform: translate(0, 0); }
+}
+.progress {
+  position: fixed; top: 0; left: 0; right: 0; height: 2.5px; z-index: var(--z-progress);
+  background: var(--grad); transform-origin: 0 50%; transform: scaleX(0);
+}
 
 /* ── nav ─────────────────────────── */
-.nav {
-  position: fixed; inset: 0 0 auto; z-index: var(--z-sticky);
-  transition: background 0.35s, box-shadow 0.35s, backdrop-filter 0.35s;
-}
+.nav { position: fixed; inset: 0 0 auto; z-index: var(--z-nav); transition: background 0.35s, box-shadow 0.35s; }
 .nav.scrolled {
   background: oklch(0.99 0.002 290 / 0.72);
   backdrop-filter: blur(18px) saturate(1.5);
@@ -80,19 +105,6 @@ section { padding-block: clamp(72px, 11vw, 132px); }
   position: relative; min-height: 100svh; overflow: clip;
   display: flex; flex-direction: column; align-items: center;
   padding-top: clamp(120px, 16vh, 168px);
-  background: linear-gradient(180deg, oklch(0.975 0.012 320), var(--paper) 62%);
-}
-.aurora { position: absolute; inset: 0; pointer-events: none; }
-.aurora span {
-  position: absolute; border-radius: 50%; filter: blur(90px); opacity: 0.5;
-  animation: drift 26s ease-in-out infinite alternate;
-}
-.aurora .b1 { width: 44vw; height: 44vw; left: -12vw; top: -10vw; background: radial-gradient(circle, var(--coral), transparent 68%); }
-.aurora .b2 { width: 40vw; height: 40vw; right: -10vw; top: -6vw; background: radial-gradient(circle, var(--sky), transparent 68%); animation-delay: -8s; }
-.aurora .b3 { width: 34vw; height: 34vw; left: 28vw; top: 22vh; background: radial-gradient(circle, var(--violet), transparent 68%); opacity: 0.32; animation-delay: -16s; }
-@keyframes drift {
-  from { transform: translate3d(0, 0, 0) scale(1); }
-  to { transform: translate3d(6vw, 4vh, 0) scale(1.12); }
 }
 .glow {
   position: absolute; width: 560px; height: 560px; border-radius: 50%;
@@ -113,10 +125,11 @@ section { padding-block: clamp(72px, 11vw, 132px); }
   font: 600 15.5px var(--font-body); padding: 13px 26px; border-radius: 999px;
   background: var(--grad); color: white;
   box-shadow: 0 6px 20px oklch(0.62 0.14 20 / 0.3), inset 0 1px 0 oklch(1 0 0 / 0.25);
-  transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.28s;
+  transition: transform 0.3s var(--ease-out), box-shadow 0.3s;
+  will-change: transform;
 }
-.btn:hover { transform: translateY(-2px); box-shadow: 0 12px 28px oklch(0.62 0.14 20 / 0.36), inset 0 1px 0 oklch(1 0 0 / 0.25); }
-.btn:active { transform: translateY(0) scale(0.98); }
+.btn:hover { box-shadow: 0 14px 32px oklch(0.62 0.14 20 / 0.38), inset 0 1px 0 oklch(1 0 0 / 0.25); }
+.btn:active { transform: scale(0.97); }
 .btn.ghost {
   background: oklch(1 0 0 / 0.65); color: var(--ink);
   border: 1px solid var(--line); box-shadow: 0 2px 10px oklch(0.3 0.02 290 / 0.06);
@@ -138,39 +151,58 @@ section { padding-block: clamp(72px, 11vw, 132px); }
 .mascot { position: absolute; pointer-events: none; z-index: 2; filter: drop-shadow(0 16px 22px oklch(0.4 0.05 300 / 0.25)); }
 .m-waving { width: clamp(120px, 15vw, 190px); right: max(2vw, calc(50% - 590px)); bottom: 6vh; }
 .m-sleeping { width: clamp(90px, 11vw, 140px); left: max(2vw, calc(50% - 580px)); top: 20vh; opacity: 0.95; }
-.scroll-hint { position: absolute; bottom: 22px; left: 50%; translate: -50%; color: var(--muted); animation: bob 2.4s ease-in-out infinite; }
-@keyframes bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(7px); } }
 
 /* ── reveal ──────────────────────── */
 html.js .rv { opacity: 0; translate: 0 30px; }
 html.js .rv.in {
   opacity: 1; translate: 0 0;
-  transition: opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1), translate 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+  transition: opacity 0.8s var(--ease-out), translate 0.8s var(--ease-out);
   transition-delay: var(--d, 0s);
 }
 html.js .pop { opacity: 0; scale: 0.86; }
 html.js .pop.in {
   opacity: 1; scale: 1;
-  transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1), scale 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  transition: opacity 0.7s var(--ease-out), scale 0.7s var(--ease-out);
   transition-delay: var(--d, 0s);
 }
+/* word-split headings */
+.wline { display: inline-block; overflow: hidden; vertical-align: bottom; }
+.wline .w { display: inline-block; transform: translateY(115%); transition: transform 0.75s var(--ease-out); transition-delay: var(--wd, 0s); }
+h2.in .wline .w { transform: translateY(0); }
+
+/* ── results wall ─────────────────── */
+.wall { overflow: clip; }
+.wall .sec-head { margin-bottom: 52px; }
+.mq { display: grid; gap: 20px; }
+.mq-row {
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(90deg, transparent, black 9%, black 91%, transparent);
+  mask-image: linear-gradient(90deg, transparent, black 9%, black 91%, transparent);
+}
+.mq-track { display: flex; gap: 20px; width: max-content; will-change: transform; }
+.mq-track img {
+  width: var(--mq-s, 250px); height: var(--mq-s, 250px); object-fit: cover;
+  border-radius: 20px;
+  box-shadow: 0 10px 28px -8px oklch(0.4 0.05 300 / 0.28);
+  transition: transform 0.45s var(--ease-out);
+}
+.mq-track img:nth-child(odd) { transform: rotate(-1.2deg); }
+.mq-track img:nth-child(even) { transform: rotate(1.1deg); }
+.mq-track img:hover { transform: rotate(0deg) scale(1.045); z-index: 1; position: relative; }
 
 /* ── demo ─────────────────────────── */
-.demo { background: var(--tint); }
 .sec-head { text-align: center; max-width: 62ch; margin-inline: auto; }
 .sec-head h2 { font-size: clamp(1.9rem, 3.6vw, 2.7rem); }
 .sec-head p { margin-top: 14px; color: var(--muted); font-size: clamp(0.98rem, 1.4vw, 1.08rem); text-wrap: pretty; }
-.frame {
-  width: min(860px, 92vw); margin: 48px auto 0;
-  border-radius: 16px; overflow: hidden; background: white;
-  box-shadow: 0 30px 70px -20px oklch(0.42 0.05 300 / 0.3), 0 2px 10px oklch(0.42 0.05 300 / 0.1);
+.demo-stage { width: min(880px, 92vw); margin: 52px auto 0; }
+.demo-stage video {
+  width: 100%; height: auto; border-radius: 18px;
+  box-shadow:
+    0 34px 80px -22px oklch(0.68 0.14 20 / 0.5),
+    0 34px 120px -40px oklch(0.55 0.14 312 / 0.55),
+    0 2px 10px oklch(0.42 0.05 300 / 0.12);
+  will-change: transform;
 }
-.frame-bar { display: flex; gap: 7px; padding: 11px 14px; background: oklch(0.965 0.005 290); }
-.frame-bar i { width: 11px; height: 11px; border-radius: 50%; }
-.frame-bar i:nth-child(1) { background: oklch(0.71 0.16 25); }
-.frame-bar i:nth-child(2) { background: oklch(0.82 0.14 88); }
-.frame-bar i:nth-child(3) { background: oklch(0.75 0.14 150); }
-.frame video { width: 100%; height: auto; }
 
 /* ── features ─────────────────────── */
 .feat {
@@ -180,36 +212,45 @@ html.js .pop.in {
 .feat + .feat { margin-top: clamp(72px, 10vw, 120px); }
 .feat:nth-child(even) { grid-template-columns: 1fr 0.85fr; }
 .feat:nth-child(even) figure { order: 2; }
-.feat figure { display: flex; justify-content: center; }
+.feat figure { display: flex; justify-content: center; will-change: transform; }
 .feat figure img { width: clamp(180px, 24vw, 280px); filter: drop-shadow(0 24px 30px oklch(0.4 0.05 300 / 0.22)); }
 .feat h3 { font-size: clamp(1.45rem, 2.6vw, 1.9rem); }
 .feat p { margin-top: 14px; color: var(--muted); max-width: 46ch; text-wrap: pretty; }
 
-/* ── steps ─────────────────────────── */
-.steps-wrap { background: var(--tint); }
-.steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; margin-top: 52px; }
+/* ── steps timeline ───────────────── */
+.tl { position: relative; margin-top: clamp(48px, 7vw, 72px); }
+.tl-rail, .tl-fill {
+  position: absolute; top: 10px; bottom: 10px; left: calc(clamp(3.2rem, 6.4vw, 5.2rem) / 2);
+  width: 3px; border-radius: 2px;
+}
+.tl-rail { background: var(--line); }
+.tl-fill { background: var(--grad); transform-origin: 50% 0; transform: scaleY(var(--p, 0)); }
 .step {
-  background: white; border-radius: var(--r-lg); padding: 30px 28px;
-  box-shadow: 0 2px 12px oklch(0.4 0.03 290 / 0.06);
-  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.35s;
+  position: relative;
+  display: grid; grid-template-columns: clamp(3.2rem, 6.4vw, 5.2rem) 1fr;
+  gap: clamp(24px, 4.5vw, 56px); align-items: start;
+  padding-block: clamp(30px, 4.5vw, 46px);
 }
-.step:hover { transform: translateY(-5px); box-shadow: 0 18px 40px -12px oklch(0.45 0.06 300 / 0.22); }
 .step .num {
-  display: inline-flex; align-items: center; justify-content: center;
-  width: 34px; height: 34px; border-radius: 12px;
-  font: 600 15px var(--font-display); color: white; background: var(--grad);
+  font: 700 clamp(3.2rem, 6.4vw, 5.2rem) / 1 var(--font-display);
+  text-align: center; color: transparent;
+  -webkit-text-stroke: 2px oklch(0.62 0.05 290 / 0.4);
+  transition: color 0.6s var(--ease-out), -webkit-text-stroke-color 0.6s;
+  position: relative; z-index: 1;
 }
-.step h3 { margin-top: 16px; font-size: 1.25rem; }
-.step p { margin-top: 8px; font-size: 14.5px; color: var(--muted); }
+.step.on .num { color: var(--coral); -webkit-text-stroke-color: var(--coral); }
+.step h3 { font-size: clamp(1.35rem, 2.4vw, 1.7rem); }
+.step p { margin-top: 10px; color: var(--muted); max-width: 52ch; text-wrap: pretty; }
 .step code {
-  display: block; margin-top: 14px; padding: 12px 14px; border-radius: 12px;
+  display: inline-block; margin-top: 16px; padding: 14px 18px; border-radius: 14px;
   background: oklch(0.26 0.015 290); color: oklch(0.93 0.02 100);
-  font: 12.5px/1.7 ui-monospace, "SF Mono", Menlo, monospace; white-space: pre; overflow-x: auto;
+  font: 13px/1.7 ui-monospace, "SF Mono", Menlo, monospace; white-space: pre;
+  box-shadow: 0 14px 34px -14px oklch(0.3 0.04 290 / 0.5);
 }
 
 /* ── download ─────────────────────── */
 .download {
-  position: relative; overflow: clip; text-align: center; color: white;
+  overflow: clip; text-align: center; color: white;
   background: linear-gradient(130deg, var(--coral-d), var(--violet-d) 55%, var(--sky-d));
 }
 .download h2 { font-size: clamp(2rem, 4.4vw, 3.2rem); }
@@ -233,9 +274,11 @@ footer a:hover { color: var(--ink); }
 @media (max-width: 860px) {
   .nav .links { display: none; }
   .m-sleeping { display: none; }
+  :root { --mq-s: 170px; }
   .feat, .feat:nth-child(even) { grid-template-columns: 1fr; text-align: center; gap: 24px; }
   .feat:nth-child(even) figure { order: 0; }
   .feat p { margin-inline: auto; }
+  .tl-rail, .tl-fill { display: none; }
   .download .m-studio, .download .m-hero { opacity: 0.35; }
 }
 @media (pointer: coarse) { .glow { display: none; } }
@@ -244,16 +287,23 @@ footer a:hover { color: var(--ink); }
   html { scroll-behavior: auto; }
   *, *::before, *::after { animation: none !important; transition-duration: 0.01ms !important; }
   html.js .rv, html.js .pop { opacity: 1; translate: 0 0; scale: 1; }
+  .wline .w { transform: none; }
   .shot { transform: none !important; }
+  .noise { animation: none; }
 }
 </style>
 </head>
 <body>
 
+<div class="aurora-global"><span class="b1"></span><span class="b2"></span><span class="b3"></span></div>
+<div class="noise"></div>
+<div class="progress" id="progress"></div>
+
 <nav class="nav" id="nav">
   <div class="wrap">
     <a class="brand" href="#top"><img src="assets/logo.webp" alt="Image Studio icon"><span>Image Studio</span></a>
     <div class="links">
+      <a href="#wall" data-i18n="nav.wall">Gallery</a>
       <a href="#features" data-i18n="nav.features">Features</a>
       <a href="#demo" data-i18n="nav.demo">Demo</a>
       <a href="#download" data-i18n="nav.download">Download</a>
@@ -269,7 +319,6 @@ footer a:hover { color: var(--ink); }
 </nav>
 
 <header class="hero" id="top">
-  <div class="aurora"><span class="b1"></span><span class="b2"></span><span class="b3"></span></div>
   <div class="glow" id="glow"></div>
 
   <div class="hero-inner">
@@ -279,11 +328,11 @@ footer a:hover { color: var(--ink); }
     </h1>
     <p class="sub" data-i18n="hero.sub">Image Studio is a tiny native Mac app that turns one sentence into a batch of images. It rides your ChatGPT login, costs nothing extra, and drops every result into a folder you own.</p>
     <div class="ctas">
-      <a class="btn" href="https://github.com/Suge8/Image-Studio/releases/latest/download/Image-Studio-macOS.zip">
+      <a class="btn" href="https://github.com/Suge8/Image-Studio/releases/latest/download/Image-Studio-macOS.zip" data-mag>
         <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 12 3 7h3V1h4v6h3L8 12Zm-6 2h12v2H2v-2Z"/></svg>
         <span data-i18n="cta.dl">Download for macOS</span>
       </a>
-      <a class="btn ghost" href="https://github.com/Suge8/Image-Studio"><span data-i18n="cta.gh">View on GitHub</span></a>
+      <a class="btn ghost" href="https://github.com/Suge8/Image-Studio" data-mag><span data-i18n="cta.gh">View on GitHub</span></a>
     </div>
     <p class="meta" data-i18n="hero.meta">macOS 15+ · 2.4 MB · free and open source</p>
   </div>
@@ -300,14 +349,44 @@ footer a:hover { color: var(--ink); }
 </header>
 
 <main>
+  <section class="wall" id="wall">
+    <div class="wrap">
+      <div class="sec-head rv">
+        <h2 data-split data-i18n="wall.h">Where one sentence can go</h2>
+        <p data-i18n="wall.cap">Every image below came out of Image Studio.</p>
+      </div>
+    </div>
+    <div class="mq">
+      <div class="mq-row"><div class="mq-track" data-dir="1">
+        <img src="assets/wall-isometric-studio.webp" width="640" height="640" loading="lazy" decoding="async" data-alt-en="Isometric artist studio diorama, generated with Image Studio" data-alt-zh="等距艺术家工作室模型，Image Studio 生成" alt="Isometric artist studio diorama, generated with Image Studio">
+        <img src="assets/wall-neon-portrait.webp" width="640" height="640" loading="lazy" decoding="async" data-alt-en="Neon-lit portrait in the rain, generated with Image Studio" data-alt-zh="霓虹雨夜人像，Image Studio 生成" alt="Neon-lit portrait in the rain, generated with Image Studio">
+        <img src="assets/wall-ukiyoe-cat.webp" width="640" height="640" loading="lazy" decoding="async" data-alt-en="Ukiyo-e cat riding a great wave, generated with Image Studio" data-alt-zh="浮世绘冲浪猫，Image Studio 生成" alt="Ukiyo-e cat riding a great wave, generated with Image Studio">
+        <img src="assets/wall-dewdrop-macro.webp" width="640" height="640" loading="lazy" decoding="async" data-alt-en="Macro dewdrop on a purple petal, generated with Image Studio" data-alt-zh="紫色花瓣上的微距露珠，Image Studio 生成" alt="Macro dewdrop on a purple petal, generated with Image Studio">
+        <img src="assets/wall-isometric-studio.webp" width="640" height="640" loading="lazy" decoding="async" alt="" aria-hidden="true">
+        <img src="assets/wall-neon-portrait.webp" width="640" height="640" loading="lazy" decoding="async" alt="" aria-hidden="true">
+        <img src="assets/wall-ukiyoe-cat.webp" width="640" height="640" loading="lazy" decoding="async" alt="" aria-hidden="true">
+        <img src="assets/wall-dewdrop-macro.webp" width="640" height="640" loading="lazy" decoding="async" alt="" aria-hidden="true">
+      </div></div>
+      <div class="mq-row"><div class="mq-track" data-dir="-1">
+        <img src="assets/wall-mars-poster.webp" width="640" height="640" loading="lazy" decoding="async" data-alt-en="Retro Mars travel poster, generated with Image Studio" data-alt-zh="复古火星旅行海报，Image Studio 生成" alt="Retro Mars travel poster, generated with Image Studio">
+        <img src="assets/wall-watercolor-fox.webp" width="640" height="640" loading="lazy" decoding="async" data-alt-en="Watercolor fox in an autumn forest, generated with Image Studio" data-alt-zh="水彩秋林狐狸，Image Studio 生成" alt="Watercolor fox in an autumn forest, generated with Image Studio">
+        <img src="assets/wall-origami-crane.webp" width="640" height="640" loading="lazy" decoding="async" data-alt-en="Gradient origami crane, generated with Image Studio" data-alt-zh="渐变折纸鹤，Image Studio 生成" alt="Gradient origami crane, generated with Image Studio">
+        <img src="assets/wall-brutalist-fog.webp" width="640" height="640" loading="lazy" decoding="async" data-alt-en="Brutalist architecture in thick fog, generated with Image Studio" data-alt-zh="雾中粗野主义建筑，Image Studio 生成" alt="Brutalist architecture in thick fog, generated with Image Studio">
+        <img src="assets/wall-mars-poster.webp" width="640" height="640" loading="lazy" decoding="async" alt="" aria-hidden="true">
+        <img src="assets/wall-watercolor-fox.webp" width="640" height="640" loading="lazy" decoding="async" alt="" aria-hidden="true">
+        <img src="assets/wall-origami-crane.webp" width="640" height="640" loading="lazy" decoding="async" alt="" aria-hidden="true">
+        <img src="assets/wall-brutalist-fog.webp" width="640" height="640" loading="lazy" decoding="async" alt="" aria-hidden="true">
+      </div></div>
+    </div>
+  </section>
+
   <section class="demo" id="demo">
     <div class="wrap">
       <div class="sec-head rv">
-        <h2 data-i18n="demo.h">Watch a batch land</h2>
+        <h2 data-split data-i18n="demo.h">Watch a batch land</h2>
         <p data-i18n="demo.p">One prompt, four parallel requests. Each image drops into the gallery the moment it finishes.</p>
       </div>
-      <div class="frame rv" style="--d:.12s">
-        <div class="frame-bar"><i></i><i></i><i></i></div>
+      <div class="demo-stage rv" style="--d:.1s" id="demoStage">
         <video id="demoVideo" src="assets/demo-generate.mp4" poster="assets/app-shot-en.webp" muted loop playsinline preload="none"></video>
       </div>
     </div>
@@ -316,28 +395,28 @@ footer a:hover { color: var(--ink); }
   <section id="features">
     <div class="wrap">
       <div class="feat rv">
-        <figure class="pop"><img src="assets/mascot-painting.webp" alt="" width="480" height="480"></figure>
+        <figure class="pop" data-tilt><img src="assets/mascot-painting.webp" alt="" width="480" height="480"></figure>
         <div>
           <h3 data-i18n="f1.h">Free with your ChatGPT subscription</h3>
           <p data-i18n="f1.p">The app reuses your local codex login. No new key, no new bill. Prefer a relay instead? Any OpenAI-Images-compatible endpoint works, and the per-image price is shown before you spend.</p>
         </div>
       </div>
       <div class="feat rv">
-        <figure class="pop" style="--d:.1s"><img src="assets/mascot-hero.webp" alt="" width="480" height="480"></figure>
+        <figure class="pop" style="--d:.1s" data-tilt><img src="assets/mascot-hero.webp" alt="" width="480" height="480"></figure>
         <div>
           <h3 data-i18n="f2.h">Every image gets its own lane</h3>
           <p data-i18n="f2.p">One request per image, all in parallel. A failed slot retries by itself. You can send the next batch while this one is still cooking.</p>
         </div>
       </div>
       <div class="feat rv">
-        <figure class="pop"><img src="assets/mascot-frame.webp" alt="" width="480" height="480"></figure>
+        <figure class="pop" data-tilt><img src="assets/mascot-frame.webp" alt="" width="480" height="480"></figure>
         <div>
           <h3 data-i18n="f3.h">Your folder is the history</h3>
           <p data-i18n="f3.p">Results land in a folder you pick. Press Space to Quick Look, drag one to Finder, right-click to use it as a reference. No database, no account, no lock-in.</p>
         </div>
       </div>
       <div class="feat rv">
-        <figure class="pop" style="--d:.1s"><img src="assets/mascot-studio.webp" alt="" width="640" height="640"></figure>
+        <figure class="pop" style="--d:.1s" data-tilt><img src="assets/mascot-studio.webp" alt="" width="640" height="640"></figure>
         <div>
           <h3 data-i18n="f4.h">No placebo controls</h3>
           <p data-i18n="f4.p">Size options match what each backend actually accepts, verified against live endpoints. Anything the Codex channel cannot do honestly routes to the relay.</p>
@@ -349,24 +428,32 @@ footer a:hover { color: var(--ink); }
   <section class="steps-wrap" id="steps">
     <div class="wrap">
       <div class="sec-head rv">
-        <h2 data-i18n="steps.h">Running in three minutes</h2>
+        <h2 data-split data-i18n="steps.h">Running in three minutes</h2>
       </div>
-      <div class="steps">
-        <div class="step rv">
-          <span class="num">1</span>
-          <h3 data-i18n="s1.h">Install</h3>
-          <code>git clone github.com/Suge8/Image-Studio
+      <div class="tl" id="timeline">
+        <div class="tl-rail"></div>
+        <div class="tl-fill" id="tlFill"></div>
+        <div class="step">
+          <span class="num">01</span>
+          <div>
+            <h3 data-i18n="s1.h">Install</h3>
+            <code>git clone github.com/Suge8/Image-Studio
 cd Image-Studio && make install</code>
+          </div>
         </div>
-        <div class="step rv" style="--d:.1s">
-          <span class="num">2</span>
-          <h3 data-i18n="s2.h">Connect</h3>
-          <p data-i18n="s2.p">Run codex login once in Terminal, or paste a relay base URL and API key in Settings.</p>
+        <div class="step">
+          <span class="num">02</span>
+          <div>
+            <h3 data-i18n="s2.h">Connect</h3>
+            <p data-i18n="s2.p">Run codex login once in Terminal, or paste a relay base URL and API key in Settings.</p>
+          </div>
         </div>
-        <div class="step rv" style="--d:.2s">
-          <span class="num">3</span>
-          <h3 data-i18n="s3.h">Generate</h3>
-          <p data-i18n="s3.p">Write a prompt, press ⌘↩. Finished images stream into the gallery one by one.</p>
+        <div class="step">
+          <span class="num">03</span>
+          <div>
+            <h3 data-i18n="s3.h">Generate</h3>
+            <p data-i18n="s3.p">Write a prompt, press ⌘↩. Finished images stream into the gallery one by one.</p>
+          </div>
         </div>
       </div>
     </div>
@@ -378,7 +465,7 @@ cd Image-Studio && make install</code>
     <div class="wrap">
       <h2 class="rv" data-i18n="dl.h">Start your first batch</h2>
       <div class="rv" style="--d:.1s">
-        <a class="btn" href="https://github.com/Suge8/Image-Studio/releases/latest/download/Image-Studio-macOS.zip">
+        <a class="btn" href="https://github.com/Suge8/Image-Studio/releases/latest/download/Image-Studio-macOS.zip" data-mag>
           <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 12 3 7h3V1h4v6h3L8 12Zm-6 2h12v2H2v-2Z"/></svg>
           <span data-i18n="dl.btn">Download v0.3.0</span>
         </a>
@@ -404,15 +491,18 @@ cd Image-Studio && make install</code>
 <script>
 document.documentElement.classList.add("js");
 const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+const fine = matchMedia("(pointer: fine)").matches;
 
 /* ── i18n ── */
 const I18N = {
   en: {
-    "nav.features": "Features", "nav.demo": "Demo", "nav.download": "Download",
+    "nav.wall": "Gallery", "nav.features": "Features", "nav.demo": "Demo", "nav.download": "Download",
     "h1.a": "Prompt in.", "h1.b": "Pictures out.",
     "hero.sub": "Image Studio is a tiny native Mac app that turns one sentence into a batch of images. It rides your ChatGPT login, costs nothing extra, and drops every result into a folder you own.",
     "cta.dl": "Download for macOS", "cta.gh": "View on GitHub",
     "hero.meta": "macOS 15+ · 2.4 MB · free and open source",
+    "wall.h": "Where one sentence can go",
+    "wall.cap": "Every image below came out of Image Studio.",
     "demo.h": "Watch a batch land",
     "demo.p": "One prompt, four parallel requests. Each image drops into the gallery the moment it finishes.",
     "f1.h": "Free with your ChatGPT subscription",
@@ -433,11 +523,13 @@ const I18N = {
     "ft.rel": "Releases", "ft.iss": "Issues"
   },
   zh: {
-    "nav.features": "功能", "nav.demo": "演示", "nav.download": "下载",
+    "nav.wall": "画廊", "nav.features": "功能", "nav.demo": "演示", "nav.download": "下载",
     "h1.a": "写一句。", "h1.b": "出一批。",
     "hero.sub": "Image Studio 是一个轻量的 macOS 原生应用：输入一句话，并行出一批图。复用你的 ChatGPT 登录，不额外花钱，每张结果都落在你自己的文件夹里。",
     "cta.dl": "下载 macOS 版", "cta.gh": "GitHub 源码",
     "hero.meta": "macOS 15+ · 2.4 MB · 免费开源",
+    "wall.h": "一句话能走多远",
+    "wall.cap": "以下每一张，都出自 Image Studio。",
     "demo.h": "看一批图落地",
     "demo.p": "一句提示词，四路并行请求。每完成一张，画廊就进一张。",
     "f1.h": "ChatGPT 订阅直接用",
@@ -461,7 +553,35 @@ const I18N = {
 const TITLES = { en: "Image Studio · Prompt in, pictures out", zh: "Image Studio · 写一句，出一批" };
 
 const shot = document.getElementById("shot");
+let lang = "en";
+
+/* word-split headings (re-run after every lang switch) */
+function splitHeadings() {
+  if (reduced) return;
+  document.querySelectorAll("h2[data-split]").forEach(h => {
+    const text = h.textContent;
+    h.classList.remove("in");
+    h.textContent = "";
+    const parts = lang === "zh" ? [...text] : text.split(/(\s+)/);
+    let i = 0;
+    parts.forEach(p => {
+      if (!p.trim()) { h.append(p); return; }
+      const line = document.createElement("span");
+      line.className = "wline";
+      const w = document.createElement("span");
+      w.className = "w";
+      w.style.setProperty("--wd", `${i * 0.05}s`);
+      w.textContent = p;
+      line.append(w);
+      h.append(line);
+      i++;
+    });
+    requestAnimationFrame(() => h.classList.add("in"));
+  });
+}
+
 function setLang(l) {
+  lang = l;
   document.documentElement.lang = l === "zh" ? "zh-Hans" : "en";
   document.title = TITLES[l];
   document.querySelectorAll("[data-i18n]").forEach(el => {
@@ -469,21 +589,29 @@ function setLang(l) {
     if (v === undefined) return;
     if (el.dataset.i18n === "ft.made") el.innerHTML = v; else el.textContent = v;
   });
+  document.querySelectorAll("[data-alt-en]").forEach(el => {
+    el.alt = l === "zh" ? el.dataset.altZh : el.dataset.altEn;
+  });
   shot.classList.toggle("show-zh", l === "zh");
   document.getElementById("lang-en").setAttribute("aria-pressed", l === "en");
   document.getElementById("lang-zh").setAttribute("aria-pressed", l === "zh");
   localStorage.setItem("lang", l);
+  splitHeadings();
 }
 document.getElementById("lang-en").onclick = () => setLang("en");
 document.getElementById("lang-zh").onclick = () => setLang("zh");
-const saved = localStorage.getItem("lang");
-setLang(saved || (navigator.language.startsWith("zh") ? "zh" : "en"));
 
 /* ── reveal on scroll ── */
 const io = new IntersectionObserver(es => es.forEach(e => {
   if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); }
 }), { threshold: 0.18 });
 document.querySelectorAll(".rv, .pop").forEach(el => io.observe(el));
+
+/* step activation */
+const stepIO = new IntersectionObserver(es => es.forEach(e => {
+  e.target.classList.toggle("on", e.isIntersecting);
+}), { rootMargin: "-38% 0px -38% 0px" });
+document.querySelectorAll(".step").forEach(s => stepIO.observe(s));
 
 /* ── hero entrance ── */
 if (!reduced) {
@@ -494,26 +622,97 @@ if (!reduced) {
   });
 }
 
-/* ── parallax + tilt + glow (lerped rAF) ── */
+/* ── magnetic buttons ── */
+if (fine && !reduced) document.querySelectorAll("[data-mag]").forEach(b => {
+  b.addEventListener("pointermove", e => {
+    const r = b.getBoundingClientRect();
+    const dx = (e.clientX - r.left - r.width / 2) / (r.width / 2);
+    const dy = (e.clientY - r.top - r.height / 2) / (r.height / 2);
+    b.style.transform = `translate(${(dx * 7).toFixed(1)}px, ${(dy * 5).toFixed(1)}px)`;
+  });
+  b.addEventListener("pointerleave", () => b.style.transform = "");
+});
+
+/* ── unified rAF loop: parallax, tilt, glow, marquee, timeline, progress ── */
 const nav = document.getElementById("nav");
 const stage = document.getElementById("shotStage");
 const glow = document.getElementById("glow");
+const progress = document.getElementById("progress");
+const tl = document.getElementById("timeline");
+const tlFill = document.getElementById("tlFill");
 const pxEls = [...document.querySelectorAll("[data-px]")];
-let target = scrollY, cur = target, mx = -600, my = -600, gcx = -600, gcy = -600;
+const tiltEls = [...document.querySelectorAll("[data-tilt]")];
+const demoStage = document.getElementById("demoStage");
+const tracks = [...document.querySelectorAll(".mq-track")].map(t => ({
+  el: t, dir: +t.dataset.dir, off: 0, half: 0, hover: 1, hoverT: 1
+}));
+function measure() { tracks.forEach(t => t.half = t.el.scrollWidth / 2); }
+addEventListener("resize", measure);
+tracks.forEach(t => {
+  t.el.parentElement.addEventListener("pointerenter", () => t.hoverT = 0.12);
+  t.el.parentElement.addEventListener("pointerleave", () => t.hoverT = 1);
+});
 
+let target = scrollY, cur = target, vel = 0;
+let mx = -600, my = -600, gcx = -600, gcy = -600;
 addEventListener("scroll", () => { target = scrollY; nav.classList.toggle("scrolled", target > 24); }, { passive: true });
 addEventListener("pointermove", e => { mx = e.clientX; my = e.clientY; }, { passive: true });
 
-if (!reduced) (function loop() {
+const clamp01 = v => Math.min(1, Math.max(0, v));
+function viewportP(el, bias) {
+  const r = el.getBoundingClientRect();
+  return clamp01((innerHeight - r.top) / (innerHeight * bias));
+}
+
+function loop() {
+  const prev = cur;
   cur += (target - cur) * 0.085;
+  vel += ((cur - prev) - vel) * 0.12;
+
+  /* progress bar */
+  const max = document.body.scrollHeight - innerHeight;
+  progress.style.transform = `scaleX(${(max > 0 ? cur / max : 0).toFixed(4)})`;
+
+  /* hero parallax + tilt */
   pxEls.forEach(el => el.style.transform = `translate3d(0, ${(cur * +el.dataset.px).toFixed(1)}px, 0)`);
-  const r = stage.getBoundingClientRect();
-  const p = Math.min(1, Math.max(0, 1 - (r.top + r.height * 0.35) / innerHeight));
-  stage.firstElementChild.style.setProperty("--tilt", `${(9 - p * 9).toFixed(2)}deg`);
+  stage.firstElementChild.style.setProperty("--tilt", `${(9 - viewportP(stage, 1) * 9).toFixed(2)}deg`);
+
+  /* feature figures: rotate + drift scrubbed through viewport */
+  tiltEls.forEach((el, i) => {
+    const p = viewportP(el, 1.15);
+    const rot = ((i % 2 ? -1 : 1) * (1 - p) * 5).toFixed(2);
+    const dy = ((1 - p) * 26).toFixed(1);
+    el.style.transform = `translate3d(0, ${dy}px, 0) rotate(${rot}deg)`;
+  });
+
+  /* demo video: subtle scale-in */
+  const dp = viewportP(demoStage, 1.2);
+  demoStage.style.transform = `scale(${(0.94 + dp * 0.06).toFixed(3)})`;
+
+  /* timeline fill */
+  if (tl && tlFill) {
+    const r = tl.getBoundingClientRect();
+    const p = clamp01((innerHeight * 0.62 - r.top) / r.height);
+    tlFill.style.setProperty("--p", p.toFixed(3));
+  }
+
+  /* marquee: base speed + scroll-velocity boost, hover slow */
+  tracks.forEach(t => {
+    if (!t.half) return;
+    t.hover += (t.hoverT - t.hover) * 0.08;
+    const speed = (0.55 + Math.min(Math.abs(vel) * 0.35, 9)) * t.hover * t.dir;
+    t.off = ((t.off + speed) % t.half + t.half) % t.half;
+    t.el.style.transform = `translate3d(${(-t.off - (t.dir < 0 ? t.half : 0)).toFixed(1)}px, 0, 0)`;
+  });
+
+  /* cursor glow */
   gcx += (mx - gcx) * 0.07; gcy += (my - gcy) * 0.07;
-  glow.style.left = gcx + "px"; glow.style.top = gcy + scrollY * 0 + "px";
+  glow.style.left = gcx + "px"; glow.style.top = gcy + "px";
+
   requestAnimationFrame(loop);
-})();
+}
+if (!reduced) { measure(); requestAnimationFrame(loop); }
+else progress.style.display = "none";
 
 /* ── demo video: play in view only ── */
 const video = document.getElementById("demoVideo");
@@ -521,6 +720,11 @@ new IntersectionObserver(es => es.forEach(e => {
   if (e.isIntersecting) { video.preload = "auto"; video.play().catch(() => {}); }
   else video.pause();
 }), { threshold: 0.25 }).observe(video);
+
+/* init */
+const saved = localStorage.getItem("lang");
+setLang(saved || (navigator.language.startsWith("zh") ? "zh" : "en"));
+if (document.fonts && document.fonts.ready) document.fonts.ready.then(measure);
 </script>
 </body>
 </html>
