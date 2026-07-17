@@ -1,0 +1,37 @@
+# Xcode / Swift
+build/
+dist/
+DerivedData/
+*.xcuserstate
+*.xccheckout
+*.xcscmblueprint
+xcuserdata/
+*.moved-aside
+*.hmap
+*.ipa
+*.dSYM.zip
+*.dSYM
+
+# macOS
+.DS_Store
+**/.DS_Store
+.AppleDouble
+.LSOverride
+
+# Editor / tooling
+.idea/
+.vscode/
+*.swp
+*~
+
+# Local secrets / env
+.env
+.env.*
+*.pem
+
+# Python leftovers (repo is Swift-only)
+.venv/
+.uv-cache/
+__pycache__/
+*.pyc
+.pytest_cache/

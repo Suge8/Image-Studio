@@ -1,0 +1,480 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		853615E722F44C87ACCE01CD /* AppLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = F16AB02AA6CA438598D89407 /* AppLog.swift */; };
+		614BFF32911E41AABA9221D3 /* ImageStudioApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15D3CED498144A3AB19F53C1 /* ImageStudioApp.swift */; };
+		261683A8165B4E6B83BA813C /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50EBC7317FE8441FBB46364D /* Models.swift */; };
+		65233E2C07944C998E94323E /* AuthClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24688E9657934B1496C5E1FD /* AuthClient.swift */; };
+		A7F0AD98165540ADB452D3BA /* CodexImageClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 868B677E06464035A8E9D066 /* CodexImageClient.swift */; };
+		19E459C8A15E4AC0A3B8F273 /* GenerationEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E40FD58057442AEB800C724 /* GenerationEngine.swift */; };
+		22A851F7DFD44E1293355DFC /* ImagePrep.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9147B199F4544A24B4F0789D /* ImagePrep.swift */; };
+		74C6221BA2094F66A9DD07D2 /* LibraryStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBE5E745497142028B8AF2EF /* LibraryStore.swift */; };
+		2CC8ECEAA51E4153BFEC772E /* BookmarkStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BB36BBF496144AEBED26826 /* BookmarkStore.swift */; };
+		CF5B9830FFB649868AA72AAC /* OutputNaming.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D57DD250D5A4EBF90D0DDDA /* OutputNaming.swift */; };
+		B71A00A5EE1848A38CD2EA18 /* ThumbnailCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDBE4C1CB061498F88C912A6 /* ThumbnailCache.swift */; };
+		B6903824CFE8442994983E00 /* StudioStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 544CC11C460A4234BBE5FF8B /* StudioStore.swift */; };
+		CE34BD6F2D0C454E89622E0A /* StudioView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 364BEBEF6D484AC0B4635B39 /* StudioView.swift */; };
+		115FC2BDD4B34FDCAFF4934C /* ComposerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FCBB2A6EB5144298DB3F13D /* ComposerView.swift */; };
+		7B12C4556A924AAEBF1486C1 /* GalleryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3D3A48A782B4CA7B3043BB4 /* GalleryView.swift */; };
+		62C06E6836FE4798810A58B2 /* OutputNamingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE230C0BA5C84F63A4A07DC3 /* OutputNamingTests.swift */; };
+		D1625ABE0795480DAB7AD4DF /* CodexImageClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6375B4019884704A34D0ED9 /* CodexImageClientTests.swift */; };
+		27FCE289CCB64EF6B4A9778E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6A2DED68DE874DE3ABCDC8BD /* Assets.xcassets */; };
+		4A8447CEB7FD4324B4951F37 /* RelayImageClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F8E9E3797EF4D58AADB1A0C /* RelayImageClient.swift */; };
+		244758201E044C279749750F /* KeychainStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AB458865E104F2285E5DD0D /* KeychainStore.swift */; };
+		05B0D9F974414B75AEB7E675 /* Preferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 021272BAA7FD43DC8AA3A66D /* Preferences.swift */; };
+		3E987329F0564D7C9919D8D3 /* RelayImageClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F30487F9CF99427CA37B656D /* RelayImageClientTests.swift */; };
+		05113F1F2D064B9DAFC2CE2E /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1AC4A3BEA7E4B1D92BDA5BE /* Theme.swift */; };
+		159B5CA8D8E8443386B8E5B3 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = F911542618154FC8B8B63CD9 /* Localizable.xcstrings */; };
+		18A2B789EB4347C290E2ACAD /* BuiltinPrompts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 283FB75943AB45D4BEBA6186 /* BuiltinPrompts.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		F16AB02AA6CA438598D89407 /* AppLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLog.swift; sourceTree = "<group>"; };
+		1D4F863264434180BDE44D77 /* ImageStudio.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ImageStudio.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A65FD24586264D529A553DEC /* ImageStudioTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ImageStudioTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		15D3CED498144A3AB19F53C1 /* ImageStudioApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageStudioApp.swift; sourceTree = "<group>"; };
+		50EBC7317FE8441FBB46364D /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
+		24688E9657934B1496C5E1FD /* AuthClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthClient.swift; sourceTree = "<group>"; };
+		868B677E06464035A8E9D066 /* CodexImageClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodexImageClient.swift; sourceTree = "<group>"; };
+		9E40FD58057442AEB800C724 /* GenerationEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenerationEngine.swift; sourceTree = "<group>"; };
+		9147B199F4544A24B4F0789D /* ImagePrep.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePrep.swift; sourceTree = "<group>"; };
+		CBE5E745497142028B8AF2EF /* LibraryStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryStore.swift; sourceTree = "<group>"; };
+		0BB36BBF496144AEBED26826 /* BookmarkStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkStore.swift; sourceTree = "<group>"; };
+		0D57DD250D5A4EBF90D0DDDA /* OutputNaming.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutputNaming.swift; sourceTree = "<group>"; };
+		DDBE4C1CB061498F88C912A6 /* ThumbnailCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThumbnailCache.swift; sourceTree = "<group>"; };
+		544CC11C460A4234BBE5FF8B /* StudioStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudioStore.swift; sourceTree = "<group>"; };
+		364BEBEF6D484AC0B4635B39 /* StudioView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudioView.swift; sourceTree = "<group>"; };
+		5FCBB2A6EB5144298DB3F13D /* ComposerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposerView.swift; sourceTree = "<group>"; };
+		A3D3A48A782B4CA7B3043BB4 /* GalleryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GalleryView.swift; sourceTree = "<group>"; };
+		DE230C0BA5C84F63A4A07DC3 /* OutputNamingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutputNamingTests.swift; sourceTree = "<group>"; };
+		A6375B4019884704A34D0ED9 /* CodexImageClientTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodexImageClientTests.swift; sourceTree = "<group>"; };
+		6A2DED68DE874DE3ABCDC8BD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		FB36A16572CD473991D0F4FB /* ImageStudio.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ImageStudio.entitlements; sourceTree = "<group>"; };
+		9F8E9E3797EF4D58AADB1A0C /* RelayImageClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RelayImageClient.swift; sourceTree = "<group>"; };
+		5AB458865E104F2285E5DD0D /* KeychainStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainStore.swift; sourceTree = "<group>"; };
+		021272BAA7FD43DC8AA3A66D /* Preferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Preferences.swift; sourceTree = "<group>"; };
+		F30487F9CF99427CA37B656D /* RelayImageClientTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RelayImageClientTests.swift; sourceTree = "<group>"; };
+		C1AC4A3BEA7E4B1D92BDA5BE /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
+		F911542618154FC8B8B63CD9 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
+		283FB75943AB45D4BEBA6186 /* BuiltinPrompts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuiltinPrompts.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		776709B3D1434929997F3721 = {
+			isa = PBXGroup;
+			children = (
+				D23974B3384243F89C3788BA /* ImageStudio */,
+				73D0D1E2C09B4E0EBC40DD0C /* ImageStudioTests */,
+				8A8FADC540964CA6B8F463C6 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		8A8FADC540964CA6B8F463C6 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				1D4F863264434180BDE44D77 /* ImageStudio.app */,
+				A65FD24586264D529A553DEC /* ImageStudioTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		D23974B3384243F89C3788BA /* ImageStudio */ = {
+			isa = PBXGroup;
+			children = (
+				15D3CED498144A3AB19F53C1 /* ImageStudioApp.swift */,
+				50EBC7317FE8441FBB46364D /* Models.swift */,
+				4549056193F341E699B1ACA9 /* Engine */,
+				9EFA4B3C7F4F4D39BB7B73D9 /* Support */,
+				803AC66A6E014F8E9BBA2A53 /* Features */,
+				6A2DED68DE874DE3ABCDC8BD /* Assets.xcassets */,
+				F911542618154FC8B8B63CD9 /* Localizable.xcstrings */,
+				FB36A16572CD473991D0F4FB /* ImageStudio.entitlements */,
+			);
+			path = ImageStudio;
+			sourceTree = "<group>";
+		};
+		4549056193F341E699B1ACA9 /* Engine */ = {
+			isa = PBXGroup;
+			children = (
+				24688E9657934B1496C5E1FD /* AuthClient.swift */,
+				9F8E9E3797EF4D58AADB1A0C /* RelayImageClient.swift */,
+				868B677E06464035A8E9D066 /* CodexImageClient.swift */,
+				9E40FD58057442AEB800C724 /* GenerationEngine.swift */,
+				9147B199F4544A24B4F0789D /* ImagePrep.swift */,
+				CBE5E745497142028B8AF2EF /* LibraryStore.swift */,
+			);
+			path = Engine;
+			sourceTree = "<group>";
+		};
+		9EFA4B3C7F4F4D39BB7B73D9 /* Support */ = {
+			isa = PBXGroup;
+			children = (
+				0BB36BBF496144AEBED26826 /* BookmarkStore.swift */,
+				0D57DD250D5A4EBF90D0DDDA /* OutputNaming.swift */,
+				DDBE4C1CB061498F88C912A6 /* ThumbnailCache.swift */,
+				C1AC4A3BEA7E4B1D92BDA5BE /* Theme.swift */,
+				283FB75943AB45D4BEBA6186 /* BuiltinPrompts.swift */,
+				021272BAA7FD43DC8AA3A66D /* Preferences.swift */,
+				5AB458865E104F2285E5DD0D /* KeychainStore.swift */,
+				F16AB02AA6CA438598D89407 /* AppLog.swift */,
+			);
+			path = Support;
+			sourceTree = "<group>";
+		};
+		803AC66A6E014F8E9BBA2A53 /* Features */ = {
+			isa = PBXGroup;
+			children = (
+				544CC11C460A4234BBE5FF8B /* StudioStore.swift */,
+				364BEBEF6D484AC0B4635B39 /* StudioView.swift */,
+				5FCBB2A6EB5144298DB3F13D /* ComposerView.swift */,
+				A3D3A48A782B4CA7B3043BB4 /* GalleryView.swift */,
+			);
+			path = Features;
+			sourceTree = "<group>";
+		};
+		73D0D1E2C09B4E0EBC40DD0C /* ImageStudioTests */ = {
+			isa = PBXGroup;
+			children = (
+				DE230C0BA5C84F63A4A07DC3 /* OutputNamingTests.swift */,
+				A6375B4019884704A34D0ED9 /* CodexImageClientTests.swift */,
+				F30487F9CF99427CA37B656D /* RelayImageClientTests.swift */,
+			);
+			path = ImageStudioTests;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		03164CE1ADAE4D6AB5594AE8 /* ImageStudio */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1ABDFCF455E24DC08F82647E /* Build configuration list for PBXNativeTarget "ImageStudio" */;
+			buildPhases = (
+				4A280AD0C8C94321A74B6042 /* Sources */,
+				865505FE2B284FE081F590F3 /* Frameworks */,
+				6A77B7F8F7AF433F8A8CDC06 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = ImageStudio;
+			productName = ImageStudio;
+			productReference = 1D4F863264434180BDE44D77 /* ImageStudio.app */;
+			productType = "com.apple.product-type.application";
+		};
+		E2D420E183D7432CB76B0AB1 /* ImageStudioTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1A1871A301D543479548FC41 /* Build configuration list for PBXNativeTarget "ImageStudioTests" */;
+			buildPhases = (
+				97E49FC717234C34B6A8ED88 /* Sources */,
+				B90A1A9A25DC49E8BAE71A11 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				98688C98070D4F58A34C1C61 /* PBXTargetDependency */,
+			);
+			name = ImageStudioTests;
+			productName = ImageStudioTests;
+			productReference = A65FD24586264D529A553DEC /* ImageStudioTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXContainerItemProxy section */
+		42388EF65D3A4C1B8D1089ED /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1833D5E42D824838B52B4F42 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 03164CE1ADAE4D6AB5594AE8;
+			remoteInfo = ImageStudio;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXTargetDependency section */
+		98688C98070D4F58A34C1C61 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 03164CE1ADAE4D6AB5594AE8 /* ImageStudio */;
+			targetProxy = 42388EF65D3A4C1B8D1089ED /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXProject section */
+		1833D5E42D824838B52B4F42 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 2620;
+				LastUpgradeCheck = 2620;
+				TargetAttributes = {
+					03164CE1ADAE4D6AB5594AE8 = {
+						CreatedOnToolsVersion = 26.2;
+					};
+					E2D420E183D7432CB76B0AB1 = {
+						CreatedOnToolsVersion = 26.2;
+						TestTargetID = 03164CE1ADAE4D6AB5594AE8;
+					};
+				};
+			};
+			buildConfigurationList = 412827C11D6F4F1E89BF819E /* Build configuration list for PBXProject "ImageStudio" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+				"zh-Hans",
+			);
+			mainGroup = 776709B3D1434929997F3721;
+			productRefGroup = 8A8FADC540964CA6B8F463C6 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				03164CE1ADAE4D6AB5594AE8 /* ImageStudio */,
+				E2D420E183D7432CB76B0AB1 /* ImageStudioTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		4A280AD0C8C94321A74B6042 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				614BFF32911E41AABA9221D3 /* ImageStudioApp.swift in Sources */,
+				261683A8165B4E6B83BA813C /* Models.swift in Sources */,
+				65233E2C07944C998E94323E /* AuthClient.swift in Sources */,
+				4A8447CEB7FD4324B4951F37 /* RelayImageClient.swift in Sources */,
+				A7F0AD98165540ADB452D3BA /* CodexImageClient.swift in Sources */,
+				19E459C8A15E4AC0A3B8F273 /* GenerationEngine.swift in Sources */,
+				22A851F7DFD44E1293355DFC /* ImagePrep.swift in Sources */,
+				74C6221BA2094F66A9DD07D2 /* LibraryStore.swift in Sources */,
+				2CC8ECEAA51E4153BFEC772E /* BookmarkStore.swift in Sources */,
+				CF5B9830FFB649868AA72AAC /* OutputNaming.swift in Sources */,
+				B71A00A5EE1848A38CD2EA18 /* ThumbnailCache.swift in Sources */,
+				05113F1F2D064B9DAFC2CE2E /* Theme.swift in Sources */,
+				18A2B789EB4347C290E2ACAD /* BuiltinPrompts.swift in Sources */,
+				05B0D9F974414B75AEB7E675 /* Preferences.swift in Sources */,
+				244758201E044C279749750F /* KeychainStore.swift in Sources */,
+				B6903824CFE8442994983E00 /* StudioStore.swift in Sources */,
+				CE34BD6F2D0C454E89622E0A /* StudioView.swift in Sources */,
+				115FC2BDD4B34FDCAFF4934C /* ComposerView.swift in Sources */,
+				7B12C4556A924AAEBF1486C1 /* GalleryView.swift in Sources */,
+				853615E722F44C87ACCE01CD /* AppLog.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		97E49FC717234C34B6A8ED88 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				62C06E6836FE4798810A58B2 /* OutputNamingTests.swift in Sources */,
+				D1625ABE0795480DAB7AD4DF /* CodexImageClientTests.swift in Sources */,
+				3E987329F0564D7C9919D8D3 /* RelayImageClientTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		865505FE2B284FE081F590F3 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B90A1A9A25DC49E8BAE71A11 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXResourcesBuildPhase section */
+		6A77B7F8F7AF433F8A8CDC06 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				27FCE289CCB64EF6B4A9778E /* Assets.xcassets in Resources */,
+				159B5CA8D8E8443386B8E5B3 /* Localizable.xcstrings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		E75009556E4D44F6B4FE83EE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf-with-dsym;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 15.0;
+				SDKROOT = macosx;
+				SWIFT_VERSION = 6.0;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				GCC_OPTIMIZATION_LEVEL = 0;
+				ENABLE_TESTABILITY = YES;
+			};
+			name = Debug;
+		};
+		23CE64DE738041878F4B2922 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf-with-dsym;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 15.0;
+				SDKROOT = macosx;
+				SWIFT_VERSION = 6.0;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		A1EE601F0309480486F56AEF /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = ImageStudio/ImageStudio.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_APP_SANDBOX = NO;
+				ENABLE_HARDENED_RUNTIME = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "Image Studio";
+				INFOPLIST_KEY_LSApplicationCategoryType = public.app-category.graphics-design;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright Image Studio";
+				INFOPLIST_KEY_NSPrincipalClass = NSApplication;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				MARKETING_VERSION = 0.1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = app.image-studio.ImageStudio;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = nonisolated;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 15.0;
+			};
+			name = Debug;
+		};
+		8FFC2CE3A81140C38F712E54 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = ImageStudio/ImageStudio.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_APP_SANDBOX = NO;
+				ENABLE_HARDENED_RUNTIME = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "Image Studio";
+				INFOPLIST_KEY_LSApplicationCategoryType = public.app-category.graphics-design;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright Image Studio";
+				INFOPLIST_KEY_NSPrincipalClass = NSApplication;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				MARKETING_VERSION = 0.1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = app.image-studio.ImageStudio;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = nonisolated;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 15.0;
+			};
+			name = Release;
+		};
+		F416E8F272F941F2B464C1CD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 15.0;
+				MARKETING_VERSION = 0.1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = app.image-studio.ImageStudioTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = nonisolated;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ImageStudio.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/ImageStudio";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+			};
+			name = Debug;
+		};
+		8621F107661C48C68D9A55BC /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 15.0;
+				MARKETING_VERSION = 0.1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = app.image-studio.ImageStudioTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = nonisolated;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ImageStudio.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/ImageStudio";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		412827C11D6F4F1E89BF819E /* Build configuration list for PBXProject "ImageStudio" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E75009556E4D44F6B4FE83EE /* Debug */,
+				23CE64DE738041878F4B2922 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		1ABDFCF455E24DC08F82647E /* Build configuration list for PBXNativeTarget "ImageStudio" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A1EE601F0309480486F56AEF /* Debug */,
+				8FFC2CE3A81140C38F712E54 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		1A1871A301D543479548FC41 /* Build configuration list for PBXNativeTarget "ImageStudioTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F416E8F272F941F2B464C1CD /* Debug */,
+				8621F107661C48C68D9A55BC /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 1833D5E42D824838B52B4F42 /* Project object */;
+}
