@@ -56,7 +56,8 @@
         <Icon name="download" size={16} />
         <span>{$t('cta.dl')}</span>
       </a>
-      <a class="btn ghost" use:magnetic href="https://github.com/Suge8/Image-Studio">
+      <a class="btn dark" use:magnetic href="https://github.com/Suge8/Image-Studio">
+        <svg class="gh-ico" width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg>
         <span>{$t('cta.gh')}</span>
       </a>
     </div>
@@ -86,15 +87,26 @@
     pointer-events: none; left: 0; top: 0; transform: translate3d(-50%, -50%, 0);
   }
   .hero-inner { position: relative; text-align: center; z-index: 1; }
-  h1 { font-size: clamp(2.35rem, 7.2vw, 5.6rem); font-weight: 700; }
-  h1 .line { display: block; overflow: hidden; }
+  h1 {
+    font-size: clamp(2.7rem, 8vw, 5.75rem);
+    font-weight: 800;
+    line-height: 0.98;
+    letter-spacing: -0.035em;
+  }
+  :global(html[lang="zh-Hans"]) h1 {
+    letter-spacing: 0.02em;
+    line-height: 1.08;
+    font-weight: 700;
+  }
+  h1 .line { display: block; overflow: hidden; padding-bottom: 0.06em; margin-bottom: -0.06em; }
   h1 .line > span { display: inline-block; }
   .sub {
-    max-width: 58ch; margin: 26px auto 0; font-size: clamp(1rem, 1.5vw, 1.13rem);
-    color: var(--muted); text-wrap: pretty;
+    max-width: 42ch; margin: 28px auto 0; font-size: clamp(1.02rem, 1.55vw, 1.18rem);
+    color: var(--muted); text-wrap: pretty; line-height: 1.55;
   }
   .ctas { display: flex; gap: 14px; justify-content: center; margin-top: 36px; flex-wrap: wrap; }
-  .hero .meta { margin-top: 18px; font-size: 13px; color: var(--muted); }
+  .gh-ico { flex-shrink: 0; display: block; }
+  .hero .meta { margin-top: 18px; font-size: 13px; color: var(--muted); font-variant-numeric: tabular-nums; }
   .shot-stage { position: relative; width: min(980px, 92vw); margin: clamp(44px, 7vh, 72px) auto 0; perspective: 1400px; z-index: 1; }
   .shot {
     position: relative; border-radius: 22px; overflow: hidden;
