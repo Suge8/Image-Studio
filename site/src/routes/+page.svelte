@@ -7,7 +7,6 @@
   import Demo from '$lib/Demo.svelte';
   import Features from '$lib/Features.svelte';
   import Tips from '$lib/Tips.svelte';
-  import Steps from '$lib/Steps.svelte';
   import Download from '$lib/Download.svelte';
   import Footer from '$lib/Footer.svelte';
   import { subscribe } from '$lib/motion.js';
@@ -34,7 +33,6 @@
   <Demo />
   <Features />
   <Tips />
-  <Steps />
   <Download />
 </main>
 <Footer />
